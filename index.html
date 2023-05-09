@@ -138,7 +138,7 @@
     }
 
     // 👉 CHALLENGE 3
-    function booleanize() {
+    function booleanize(obj) {
       // 🧠 booleanize takes an object as its single argument, which can have any number of properties
       // Loop over the properties and then return the object, after applying the following transformations:
       //    * If a value is the number zero, it must be transformed into the Boolean false
@@ -147,10 +147,24 @@
       // 🧠 Edge cases:
       //    * If a property name exceeds 9 characters, return the string "shorten all prop names to 9 chars or less"
       // 🌟 HINT: careful not to perform any unintended changes on the object
+      for (let key in obj) {
+        if (key.length > 9) {
+          return "shorten all prop names to 9 chars or less"
+        } else if (obj[key] === null) {
+          delete obj[key]
+        } else if (obj[key] === 1) {
+          obj[key] = true
+        } else if (obj[key] === 0) {
+          obj[key] = false
+        }
+      }
+
+
+      return obj
     }
 
     // 👉 CHALLENGE 4
-    function scrub() {
+    
       // 🧠 scrub takes a string "text" as its first argument, and an array of forbidden words "forbidden" as its second
       // Any word in the text included in the array of forbidden words is replaced with a word of equal length but made of lowcase "x"
       // The scrubbed text is then returned from the function, as seen in the examples below
@@ -162,10 +176,27 @@
       //    scrub("aces high", ["high", "aces", "hearts"]) // returns "xxxx xxxx"
       //    scrub("", ["high", "aces""]) // returns ""
       // 🌟 HINT: useful array methods to use are `push`, `indexOf`, `split`, `join`
+      function scrub(arr, forbidden) {
+      
+      let words = arr.split(" ")
+      const scrubbed = []
+      //iterate over each word
+      for ( i = 0; i < words.length; i++ ) {
+       let word = words[i];
+
+      if (forbidden.indexOf(word) !== -1) {
+        word = 'x'.repeat(word.length);
+
+      }
+      scrubbed.push(word)
+      }
+    return scrubbed.join(" ")
+      // function returns the scrubbed text by joiinign the scrubbed array with tspaces using the join method. using the join method.
+      
     }
 
     // 👉 CHALLENGE 5
-    function normalizePhoneNumber() {
+   
       // 🧠 normalizePhoneNumber takes a string as its only argument, representing a ten-digit number
       // The function returns a string formatted as seen below
       // 🧠 Examples of usage:
@@ -177,7 +208,35 @@
       // 🌟 HINT: instead of looping over the number's digits, loop backwards over a template "(XXX) XXX-XXXX"
       // 🌟 HINT: at each iteration, if the current character is an "X", replace it with the result of popping a digit from the number
       // 🌟 HINT: if you'd rather loop forwards, use `shift` instead of `pop`
+      function normalizePhoneNumber(number) {
+
+  if (number.length !== 10) {
+    return "type a 10-digit number"
+  } 
+
+
+  for (i = 0; i < number.length; i++) {
+    if (isNaN(number[i]) || number[i] > 9 || number[i] < 0) {
+      return 'invalid phone number'
     }
+  }
+
+
+  const template = "(XXX) XXX-XXXX"
+  let index = number.length-1
+  let result = ''
+  for ( i = template.length -1; i >= 0; i-- ) {
+    if (template[i] === 'X') {
+      result = number[index] + result
+      index--
+    } else {
+      result = template[i] + result
+    }
+  }
+  return result
+}
+      
+  
 
     // 👉 CHALLENGE 6 (bonus, NOT graded)
     function diceRolls() {
